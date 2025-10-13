@@ -1,0 +1,67 @@
+
+# Playwright
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test Results and Reports
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/reports/
+/allure-results/
+/allure-report/
+
+# Environment Variables
+.env.local
+.env.*.local
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime Data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage Directory
+coverage/
+.nyc_output/
+
+# Temporary Files
+tmp/
+temp/
+
+# Build Output
+dist/
+build/
+
+# Screenshots (keep structure, ignore content)
+reports/screenshots/*
+!reports/screenshots/.gitkeep
+
+# Videos
+reports/videos/*
+!reports/videos/.gitkeep
+/playwright/.auth/

@@ -1,0 +1,16 @@
+{
+  "searchTerms": {
+    "javascript": "javascript",
+    "typescript": "typescript",
+    "pom": "POM",
+    "testing": "testing"
+  },
+  "expectedResults": {
+    "javascript": "JavaScript and TypeScript",
+    "pom": "Testing multiple roles with"
+  },
+  "urls": {
+    "home": "https://playwright.dev/",
+    "docs": "https://playwright.dev/docs/intro"
+  }
+}
