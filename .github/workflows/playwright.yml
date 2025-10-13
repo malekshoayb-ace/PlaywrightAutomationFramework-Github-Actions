@@ -27,3 +27,57 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+  generate-report:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    
+    - name: Install Allure
+      run: |
+        sudo apt-get update
+        sudo apt-get install default-jre -y
+        wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
+        tar -zxvf allure-2.24.0.tgz
+        sudo mv allure-2.24.0 /opt/allure
+        sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+    
+    - name: Generate Allure Report
+      run: |
+        mkdir -p allure-results-combined
+        find . -name "allure-results" -type d -exec cp -r {}/* allure-results-combined/ \;
+        allure generate allure-results-combined --clean -o allure-report
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./allure-report
+        destination_dir: test-reports
+
+  notify:
+    needs: [test, generate-report]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Notify on success
+      if: needs.test.result == 'success'
+      run: echo "✅ All tests passed successfully!"
+    
+    - name: Notify on failure
+      if: needs.test.result == 'failure'
+      run: echo "❌ Some tests failed. Check the reports for details."
