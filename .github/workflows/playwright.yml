@@ -30,4 +30,34 @@ jobs:
           allure-results/
         retention-days: 30
 
- 
+  generate-report:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v5
+      with:
+        node-version: lts/*
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Generate Allure Report
+      run: |
+        npm run allure:generate
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./allure-report
+        destination_dir: test-reports
