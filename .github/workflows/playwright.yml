@@ -6,6 +6,9 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+permissions:
+  contents: write
+  pages: write
 jobs:
   test:
     timeout-minutes: 60
@@ -58,6 +61,11 @@ jobs:
         tar -zxvf allure-2.24.0.tgz
         sudo mv allure-2.24.0 /opt/allure
         sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+    
+    - name: Combine Allure Results
+      run: |
+        mkdir -p allure-results
+        find . -name "allure-results" -type d -exec cp -r {}/* allure-results/ \; 2>/dev/null || true
     
     - name: Generate Allure Report
       run: |
