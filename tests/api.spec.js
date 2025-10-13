@@ -38,4 +38,4 @@ test.describe('API Testing Integration', () => {
     expect(response.headers()['content-type']).toContain('application/json');
     expect(response.headers()['server']).toBeDefined();
   });
-});
+}); 
