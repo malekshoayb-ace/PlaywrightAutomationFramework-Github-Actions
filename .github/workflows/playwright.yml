@@ -121,12 +121,19 @@ jobs:
         allure generate allure-results-combined --clean -o allure-report
     
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./allure-report
-        destination_dir: test-reports
+      env:
+        GH_PAGES_PAT: ${{ secrets.GH_PAGES_PAT }}
+      run: |
+        git config --global user.name 'malekshoayb-ace'
+        git config --global user.email 'malekshoayb.ace@gmail.com'
+        git remote set-url origin https://x-access-token:${GH_PAGES_PAT}@github.com/${{ github.repository }}
+        git checkout --orphan gh-pages
+        git rm -rf .
+        cp -r allure-report/* .
+        git add .
+        git commit -m "Deploy Allure report to GitHub Pages"
+        git push -f origin gh-pages
   
   notify:
     needs: [test, generate-report]
