@@ -1,0 +1,2 @@
+Total requests: 32
+Total responses: 32
