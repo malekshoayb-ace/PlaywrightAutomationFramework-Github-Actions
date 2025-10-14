@@ -106,8 +106,10 @@ jobs:
 
       - name: Send TestDino report
         if: always()
+        env:
+          TESTDINO_TOKEN: trx_production_6c9babbff3100945abf9bea16239a45ed896eebb40174fe7ce4487311beee6d2
         run: |
-          npx tdpw ./reports --token=${{ secrets.TESTDINO_TOKEN }} --upload-html --verbose
+          npx tdpw ./reports --token=$TESTDINO_TOKEN --upload-html --verbose
 
       - name: Display Report URL
         if: github.ref == 'refs/heads/main'
