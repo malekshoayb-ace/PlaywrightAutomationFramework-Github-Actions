@@ -104,18 +104,10 @@ jobs:
           publish_dir: ./allure-report
           destination_dir: test-reports
 
-      - name: Send Report to TestDino
+      - name: Send TestDino report
         if: always()
         run: |
-          curl -X POST "https://api.testdino.com/reports" \
-            -H "Authorization: Bearer trx_production_6c9babbff3100945abf9bea16239a45ed896eebb40174fe7ce4487311beee6d2" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "project": "${{ github.repository }}",
-              "branch": "${{ github.ref_name }}",
-              "commit": "${{ github.sha }}",
-              "reportUrl": "https://${{ github.repository_owner }}.github.io/$(echo "${{ github.repository }}" | cut -d"/" -f2)/test-reports/"
-            }'
+          npx tdpw ./reports --token=${{ secrets.TESTDINO_TOKEN }} --upload-html --verbose
 
       - name: Display Report URL
         if: github.ref == 'refs/heads/main'
