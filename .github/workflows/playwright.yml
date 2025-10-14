@@ -103,3 +103,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
           destination_dir: test-reports
+
+      - name: Display Report URL
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "✅ Allure Report is published!"
+          echo "🔗 View it here:"
+          echo "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/test-reports/"
