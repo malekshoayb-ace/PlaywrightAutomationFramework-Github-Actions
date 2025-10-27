@@ -1,0 +1,1 @@
+Search time: 1007ms
